@@ -18,7 +18,7 @@ quotes = [
 
 ]
 
-# Set the maximum resolution
+# to Set the maximum resolution
 max_width = 400
 max_height = 400
 
@@ -65,7 +65,7 @@ def load_tasks():
     except FileNotFoundError:
         pass
 
-# Create the main window
+# to Create the main window
 window = tk.Tk()
 window.title("To-Do List")
 window.geometry("400x400")
@@ -76,11 +76,10 @@ window.configure(bg="#36454f")
 task_list = tk.Listbox(window, width=30, height=10, font=("Arial", 12), fg="black", bg="white")
 task_list.pack(pady=10)
 
-# Create the task entry field
 task_entry = tk.Entry(window, font=("Arial", 12))
 task_entry.pack(pady=5)
 
-# Create buttons
+# make the buttons
 button_frame = tk.Frame(window, bg="#36454f")
 button_frame.pack()
 
@@ -90,11 +89,9 @@ add_button.grid(row=0, column=0, padx=5)
 remove_button = tk.Button(button_frame, text="Remove Task", command=remove_task, bg="#68838b", fg="black")
 remove_button.grid(row=0, column=1, padx=5)
 
-# Create checkboxes
 check_frame = tk.Frame(window, bg="#68838b")
 check_frame.pack()
 
-# Create the quote section
 quote_frame = tk.Frame(window, bg="#68838b")
 quote_frame.pack(pady=10)
 
@@ -104,11 +101,8 @@ quote_label.pack()
 update_quote_button = tk.Button(window, text="Get Quote", command=update_quote, bg="#68838b", fg="black")
 update_quote_button.pack()
 
-# Update the initial quote
 update_quote()
 
-# Load the saved tasks
 load_tasks()
 
-# Run the main loop
 window.mainloop()
