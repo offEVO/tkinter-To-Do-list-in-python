@@ -1,0 +1,114 @@
+import tkinter as tk
+import random
+
+quotes = [
+    "Don't stop when you're tired. Stop when you're done.",
+    "You can't change the past, but you can choose your response to it.",
+    "Mental toughness is a lifestyle.",
+    "You cannot out-train a bad mindset.",
+    "The comfort zone is the great enemy to progress.",
+    "If you want to be successful, you have to be willing to fail.",
+    "The only way to get better at something is to do it over and over again, especially when you don't want to.",
+    "Your mind is your most powerful weapon. Learn to control it.",
+    "You are capable of more than you think you are.",
+    "The only way to overcome your fears is to face them head-on.",
+    "Life is not fair. Get over it.",
+    "The only way to achieve true greatness is to be willing to suffer.",
+    "If you want success you can't be scared of failure."
+
+]
+
+# Set the maximum resolution
+max_width = 400
+max_height = 400
+
+def add_task():
+    task = task_entry.get()
+    if task:
+        task_list.insert(tk.END, task)
+        task_entry.delete(0, tk.END)
+        save_tasks()
+
+def remove_task():
+    try:
+        index = task_list.curselection()
+        task_list.delete(index)
+        save_tasks()
+    except tk.TclError:
+        pass
+
+def toggle_check():
+    try:
+        index = task_list.curselection()
+        if task_list.itemcget(index, "foreground") == "gray":
+            task_list.itemconfig(index, fg="black", font=("Arial", 12))
+        else:
+            task_list.itemconfig(index, fg="gray", font=("Arial", 12, "strikeout"))
+    except tk.TclError:
+        pass
+
+def update_quote():
+    quote = random.choice(quotes)
+    quote_label.config(text=quote)
+
+def save_tasks():
+    tasks = task_list.get(0, tk.END)
+    with open("tasks.txt", "w") as file:
+        file.write("\n".join(tasks))
+
+def load_tasks():
+    try:
+        with open("tasks.txt", "r") as file:
+            tasks = file.read().splitlines()
+            for task in tasks:
+                task_list.insert(tk.END, task)
+    except FileNotFoundError:
+        pass
+
+# Create the main window
+window = tk.Tk()
+window.title("To-Do List")
+window.geometry("400x400")
+window.maxsize(width=max_width, height=max_height)
+window.configure(bg="#36454f")
+
+# Create the task list
+task_list = tk.Listbox(window, width=30, height=10, font=("Arial", 12), fg="black", bg="white")
+task_list.pack(pady=10)
+
+# Create the task entry field
+task_entry = tk.Entry(window, font=("Arial", 12))
+task_entry.pack(pady=5)
+
+# Create buttons
+button_frame = tk.Frame(window, bg="#36454f")
+button_frame.pack()
+
+add_button = tk.Button(button_frame, text="Add Task", command=add_task, bg="#68838b", fg="black")
+add_button.grid(row=0, column=0, padx=5)
+
+remove_button = tk.Button(button_frame, text="Remove Task", command=remove_task, bg="#68838b", fg="black")
+remove_button.grid(row=0, column=1, padx=5)
+
+# Create checkboxes
+check_frame = tk.Frame(window, bg="#68838b")
+check_frame.pack()
+
+# Create the quote section
+quote_frame = tk.Frame(window, bg="#68838b")
+quote_frame.pack(pady=10)
+
+quote_label = tk.Label(quote_frame, text="", font=("Arial", 12), wraplength=350)
+quote_label.pack()
+
+update_quote_button = tk.Button(window, text="Get Quote", command=update_quote, bg="#68838b", fg="black")
+update_quote_button.pack()
+
+# Update the initial quote
+update_quote()
+
+# Load the saved tasks
+load_tasks()
+
+# Run the main loop
+window.mainloop()
